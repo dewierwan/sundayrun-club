@@ -59,7 +59,7 @@ h1 .nowrap { white-space: nowrap; }
 .facts p { margin: 0; color: var(--muted); font-size: 15px; max-width: 32ch; }
 
 /* next run */
-.next { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; padding-block: 36px 48px; border-top: 1px solid var(--line); }
+.next { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 300px); justify-content: start; gap: 32px 56px; align-items: center; padding-block: 36px 48px; border-top: 1px solid var(--line); }
 .bib { background: var(--bib); color: var(--bib-ink); border-radius: 6px; position: relative; padding: 18px 34px 30px; box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 10px 30px -18px rgba(0,0,0,.35); transform: rotate(-1.2deg); transition: transform .2s ease; }
 a.bib { display: block; text-decoration: none; }
 a.bib:hover { transform: rotate(1deg) scale(1.02); }
@@ -67,11 +67,21 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 .bib::before { top: 12px; left: 12px; } .bib::after { top: 12px; right: 12px; }
 .bib .pins::before { bottom: 12px; left: 12px; } .bib .pins::after { bottom: 12px; right: 12px; }
 .bib-top { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--bib-ink); padding-bottom: 10px; }
-.bib-num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: clamp(120px, 20vw, 200px); line-height: .9; letter-spacing: -.03em; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
+.bib-num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: clamp(80px, 11vw, 120px); line-height: .9; letter-spacing: -.03em; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
 .bib-num small { font-size: .32em; vertical-align: top; margin-right: 4px; font-stretch: 80%; }
 .bib-when { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 24px; line-height: 1.2; }
 .btn { display: inline-block; margin-top: 28px; background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 700; padding: 13px 22px; border-radius: 999px; }
 .btn:hover { background: var(--gold); color: var(--gold-ink); }
+.soon { grid-column: 1 / -1; margin-top: 12px; }
+.soon ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.soon a { display: grid; grid-template-columns: 44px auto 1fr auto; gap: 16px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); text-decoration: none; }
+.soon li:last-child a { border-bottom: 1px solid var(--line); }
+.soon img { width: 44px; height: 44px; border-radius: 4px; object-fit: cover; display: block; transition: transform .2s ease; }
+.soon b { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
+.soon .d { color: var(--muted); }
+.soon .go { font-size: 14px; color: var(--muted); }
+.soon a:hover .go { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+.soon a:hover img { transform: rotate(-3deg) scale(1.06); }
 .poster { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block; max-width: 100%; }
 .empty { padding: 28px; border: 2px dashed var(--line); border-radius: 6px; color: var(--muted); }
 
@@ -197,7 +207,15 @@ footer .wrap { padding-block: 32px 48px; }
         '</a>' +
         '<a class="btn" href="' + url(n0) + '">RSVP on Partiful</a>' +
       '</div>' +
-      '<a href="' + url(n0) + '"><img class="poster" src="' + n0.poster + '" alt="Poster for Sunday Run Club #' + n0.n + '"></a>';
+      '<a href="' + url(n0) + '"><img class="poster" src="' + n0.poster + '" alt="Poster for Sunday Run Club #' + n0.n + '"></a>' +
+      (upcoming.length > 1 ? '<div class="soon"><div class="label">Coming up</div><ul>' +
+        upcoming.slice(1).map(function (e) {
+          return '<li><a href="' + url(e) + '">' +
+            (e.poster ? '<img src="' + e.poster + '" alt="" loading="lazy">' : '<span></span>') +
+            '<b>#' + e.n + '</b>' +
+            '<span class="d">' + weekday(e.s) + ' ' + dayMonth(e.s) + ', ' + time(e.s) + '</span>' +
+            '<span class="go">RSVP</span></a></li>';
+        }).join('') + '</ul></div>' : '');
     document.getElementById('link-next').href = url(n0);
   } else {
     next.innerHTML = '<div class="empty">The next run is being planned. Check the WhatsApp group for updates.</div>';
