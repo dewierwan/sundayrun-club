@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunday Run Club</title>
+<meta name="description" content="9am, Golden Fire Hydrant, every Sunday. A slow 5 to 7 km run from near Dolores Park in San Francisco, then coffee and chat.">
+<meta property="og:title" content="Sunday Run Club">
+<meta property="og:description" content="9am, Golden Fire Hydrant, every Sunday.">
+<meta property="og:url" content="https://sundayrun.club/">
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e2a828">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23e2a828'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one statement, the next run as a race bib beside its poster, a slow photo strip, then a full-bleed wall of past posters. */
+:root {
+  --paper: #f6f5f1;
+  --ink: #1d1c19;
+  --muted: #6f6c64;
+  --line: #dcd9d0;
+  --gold: #e2a828;
+  --gold-ink: #1d1c19;
+  --bib: #ffffff;
+  --bib-ink: #1d1c19;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Martian Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #171715; --ink: #eceae3; --muted: #a29f95; --line: #34332f;
+    --gold: #f0b93a; --gold-ink: #171715; --bib: #f4f2ec; --bib-ink: #1d1c19;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #171715; --ink: #eceae3; --muted: #a29f95; --line: #34332f;
+  --gold: #f0b93a; --gold-ink: #171715; --bib: #f4f2ec; --bib-ink: #1d1c19;
+  color-scheme: dark;
+}
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.5; }
+a { color: inherit; }
+img { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* header */
+header .wrap { padding-block: 20px; }
+.mark { font-family: var(--display); font-weight: 900; font-stretch: 70%; font-size: 22px; letter-spacing: -.01em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin: 0; }
+.mark i { width: 12px; height: 12px; border-radius: 50%; background: var(--gold); display: inline-block; }
+
+/* intro */
+.intro { padding-block: 40px 36px; }
+h1 { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(33px, 6.5vw, 66px); line-height: 1.02; letter-spacing: -.02em; margin: 0; max-width: 13ch; text-wrap: balance; }
+h1 em { font-style: normal; white-space: nowrap; background: linear-gradient(transparent 62%, var(--gold) 62%, var(--gold) 92%, transparent 92%); }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 36px; }
+.facts h3 { font-family: var(--display); font-stretch: 85%; font-weight: 800; font-size: 20px; margin: 6px 0 4px; }
+.facts p { margin: 0; color: var(--muted); font-size: 15px; max-width: 32ch; }
+
+/* next run */
+.next { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; padding-block: 36px 48px; border-top: 1px solid var(--line); }
+.bib { background: var(--bib); color: var(--bib-ink); border-radius: 6px; position: relative; padding: 18px 34px 30px; box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 10px 30px -18px rgba(0,0,0,.35); transform: rotate(-1.2deg); }
+.bib::before, .bib::after, .bib .pins::before, .bib .pins::after { content: ""; position: absolute; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 1px 2px rgba(0,0,0,.25); }
+.bib::before { top: 12px; left: 12px; } .bib::after { top: 12px; right: 12px; }
+.bib .pins::before { bottom: 12px; left: 12px; } .bib .pins::after { bottom: 12px; right: 12px; }
+.bib-top { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--bib-ink); padding-bottom: 10px; }
+.bib-num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: clamp(120px, 20vw, 200px); line-height: .9; letter-spacing: -.03em; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
+.bib-num small { font-size: .32em; vertical-align: top; margin-right: 4px; font-stretch: 80%; }
+.bib-when { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 24px; line-height: 1.2; }
+.btn { display: inline-block; margin-top: 28px; background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 700; padding: 13px 22px; border-radius: 999px; }
+.btn:hover { background: var(--gold); color: var(--gold-ink); }
+.poster { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block; max-width: 100%; }
+.empty { padding: 28px; border: 2px dashed var(--line); border-radius: 6px; color: var(--muted); }
+
+/* photo strip */
+.strip { overflow: hidden; padding-block: 0 48px; }
+.track { display: flex; gap: 10px; width: max-content; animation: drift var(--drift, 900s) linear infinite; }
+.strip:hover .track { animation-play-state: paused; }
+.track img { height: 240px; width: auto; border-radius: 4px; display: block; max-width: none; }
+@keyframes drift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .strip { overflow-x: auto; }
+  .track { animation: none; }
+}
+
+/* past runs: full-bleed wall */
+.wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.wall a { display: block; position: relative; }
+.wall img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; transition: transform .2s ease, box-shadow .2s ease; }
+.wall a:hover, .wall a:focus-visible { z-index: 1; }
+.wall a:hover img { box-shadow: 0 14px 30px -12px rgba(0,0,0,.45); }
+.wall a:nth-child(3n+1):hover img { transform: rotate(-2.5deg) scale(1.04); }
+.wall a:nth-child(3n+2):hover img { transform: rotate(2deg) scale(1.04); }
+.wall a:nth-child(3n):hover img { transform: rotate(-1.2deg) scale(1.04); }
+
+/* footer */
+footer .wrap { padding-block: 32px 48px; }
+.links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 10px 0 0; padding: 0; list-style: none; }
+.links a { font-family: var(--mono); font-size: 13px; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.links span { color: var(--muted); font-size: 14px; display: block; }
+
+@media (max-width: 760px) {
+  .next { grid-template-columns: minmax(0, 1fr); }
+  .facts { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .track img { height: 180px; }
+  .bib { padding: 16px 26px 26px; }
+  .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="mark"><i aria-hidden="true"></i>Sunday Run Club</p>
+  </div>
+</header>
+
+<main>
+  <section class="wrap intro">
+    <h1>9am, <em>Golden Fire Hydrant</em>, every Sunday.</h1>
+    <div class="facts">
+      <div>
+        <div class="label">Meet</div>
+        <h3>Near Dolores Park</h3>
+        <p>The Golden Fire Hydrant at 20th and Church, on the southwest side of the park.</p>
+      </div>
+      <div>
+        <div class="label">Run</div>
+        <h3>Slow, 5 to 7 km</h3>
+        <p>Conversation pace. Nobody gets left behind.</p>
+      </div>
+      <div>
+        <div class="label">After</div>
+        <h3>Coffee and chat</h3>
+        <p>Running late? Post in the WhatsApp group.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap next" id="next" aria-label="Next run"></section>
+
+  <section class="strip" aria-label="Photos"><div class="track" id="track"></div></section>
+
+  <section class="wall" id="wall" aria-label="Past runs"></section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ul class="links">
+      <li><a id="link-next" href="#next">sundayrun.club/next</a><span>The coming Sunday's Partiful</span></li>
+      <li><a href="https://photos.app.goo.gl/6V19nvmFXAsfoa4H8">sundayrun.club/photos</a><span>The shared album</span></li>
+      <li><a href="https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT">sundayrun.club/chat</a><span>The WhatsApp group</span></li>
+    </ul>
+  </div>
+</footer>
+
+<script id="data" type="application/json">/*DATA*/</script>
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById('data').textContent);
+  var tz = 'America/Los_Angeles';
+  var now = new Date();
+  function part(d, opts) { return new Intl.DateTimeFormat('en-GB', Object.assign({ timeZone: tz }, opts)).format(d); }
+  function dayMonth(d) { return part(d, { day: 'numeric', month: 'short' }); }
+  function weekday(d) { return part(d, { weekday: 'long' }); }
+  function time(d) {
+    var t = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(d);
+    return t.replace(' ', '').toLowerCase();
+  }
+  function url(e) { return 'https://partiful.com/e/' + e.id; }
+  function ymd(d) { return new Date(part(d, { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-')); }
+  function when(d) {
+    var n = Math.round((ymd(d) - ymd(now)) / 864e5);
+    if (n === 0) return 'Today';
+    if (n === 1) return 'Tomorrow';
+    if (n < 7) return 'This ' + weekday(d);
+    return 'In ' + n + ' days';
+  }
+
+  var events = data.events.map(function (e) {
+    e.s = new Date(e.start);
+    e.e = e.end ? new Date(e.end) : new Date(e.s.getTime() + 90 * 6e4);
+    return e;
+  });
+  var upcoming = events.filter(function (e) { return e.e > now; });
+  var past = events.filter(function (e) { return e.e <= now; }).reverse();
+
+  var next = document.getElementById('next');
+  if (upcoming.length) {
+    var n0 = upcoming[0];
+    next.innerHTML =
+      '<div>' +
+        '<div class="label" style="margin-bottom:14px">Next run</div>' +
+        '<div class="bib"><span class="pins"></span>' +
+          '<div class="bib-top"><span>Sunday Run Club</span><span>' + when(n0.s) + '</span></div>' +
+          '<div class="bib-num"><small>#</small>' + n0.n + '</div>' +
+          '<div class="bib-when">' + weekday(n0.s) + ' ' + dayMonth(n0.s) + ', ' + time(n0.s) + '</div>' +
+        '</div>' +
+        '<a class="btn" href="' + url(n0) + '">RSVP on Partiful</a>' +
+      '</div>' +
+      '<a href="' + url(n0) + '"><img class="poster" src="' + n0.poster + '" alt="Poster for Sunday Run Club #' + n0.n + '"></a>';
+    document.getElementById('link-next').href = url(n0);
+  } else {
+    next.innerHTML = '<div class="empty">The next run is being planned. Check the WhatsApp group for updates.</div>';
+  }
+
+  var track = document.getElementById('track');
+  var total = 0;
+  var imgs = data.photos.map(function (p) {
+    var w = Math.round(240 * p.w / p.h);
+    total += w + 10;
+    return '<img src="' + p.src + '" width="' + w + '" height="240" alt="Run club photo from ' + p.date + '" loading="lazy">';
+  }).join('');
+  track.innerHTML = imgs + imgs.replace(/alt="[^"]*"/g, 'alt="" aria-hidden="true"');
+  track.style.setProperty('--drift', Math.round(total / 22) + 's');
+
+  var wall = document.getElementById('wall');
+  var shown = past.filter(function (e) { return e.poster; });
+  function tile(e, filler) {
+    return '<a href="' + url(e) + '"' + (filler ? ' class="filler" aria-hidden="true" tabindex="-1"' : '') + '>' +
+      '<img src="' + e.poster + '" alt="' + (filler ? '' : 'Sunday Run Club #' + e.n + ', ' + dayMonth(e.s)) + '" loading="lazy"></a>';
+  }
+  wall.innerHTML = shown.map(function (e) { return tile(e, false); }).join('');
+
+  // Keep the wall a full rectangle: repeat the newest posters to complete the last row.
+  function fillLastRow() {
+    wall.querySelectorAll('.filler').forEach(function (el) { el.remove(); });
+    var cols = getComputedStyle(wall).gridTemplateColumns.split(' ').length;
+    var gap = (cols - shown.length % cols) % cols;
+    wall.insertAdjacentHTML('beforeend', shown.slice(0, gap).map(function (e) { return tile(e, true); }).join(''));
+  }
+  fillLastRow();
+  var resizeTimer;
+  window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(fillLastRow, 100); });
+})();
+</script>
+</body>
+</html>
