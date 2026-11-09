@@ -166,7 +166,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
     </ul>
   </nav>
 
-  <section class="strip" aria-label="Photos"><div class="track" id="track"></div></section>
+  <!--PHOTO_STRIP--><section class="strip" aria-label="Photos"><div class="track" id="track"></div></section><!--/PHOTO_STRIP-->
 
   <section class="wall" id="wall" aria-label="Past runs"></section>
 </main>
@@ -232,6 +232,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   }
 
   var track = document.getElementById('track');
+  if (track) {
   var total = 0;
   var imgs = data.photos.map(function (p) {
     var w = Math.round(240 * p.w / p.h);
@@ -241,6 +242,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   track.innerHTML = imgs + imgs.replace(/alt="[^"]*"/g, 'alt="" aria-hidden="true"');
   // 50 px per second, the react-fast-marquee default.
   track.style.setProperty('--drift', Math.round(total / 50) + 's');
+  }
 
   var wall = document.getElementById('wall');
   var shown = past.filter(function (e) { return e.poster; });

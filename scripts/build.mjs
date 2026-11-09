@@ -16,6 +16,8 @@ const DIST = join(ROOT, 'dist');
 const PAST = join(ROOT, 'past');
 const SITE = 'https://sundayrun.club';
 const ALBUM_URL = 'https://photos.app.goo.gl/6V19nvmFXAsfoa4H8';
+// Photo strip is hidden for now (Dewi, 9 Nov 2026). Set to true to bring it back.
+const SHOW_PHOTO_STRIP = false;
 const CHAT_URL = 'https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36';
 
@@ -173,13 +175,13 @@ async function main() {
     pool([...new Set(ids)], 6, readEvent).then((list) =>
       list.filter(Boolean).sort((a, b) => a.start.localeCompare(b.start)),
     ),
-    readAlbum(),
+    SHOW_PHOTO_STRIP ? readAlbum() : [],
   ]);
   console.log(`${events.length} events, ${albumPhotos.length} photos`);
 
   await rm(DIST, { recursive: true, force: true });
   await mkdir(join(DIST, 'img/posters'), { recursive: true });
-  await mkdir(join(DIST, 'img/photos'), { recursive: true });
+  if (SHOW_PHOTO_STRIP) await mkdir(join(DIST, 'img/photos'), { recursive: true });
 
   const withPosters = await pool(events, 6, async ({ savedPoster, ...e }) => {
     const file = `img/posters/${e.id}.jpg`;
@@ -203,7 +205,7 @@ async function main() {
   const upcoming = withPosters.filter((e) => Date.parse(e.end || e.start) + (e.end ? 0 : 90 * 60000) > now);
   const share = upcoming[0] || withPosters[withPosters.length - 1];
 
-  const html = template
+  const html = (SHOW_PHOTO_STRIP ? template : template.replace(/<!--PHOTO_STRIP-->[\s\S]*?<!--\/PHOTO_STRIP-->\n?/, ''))
     .replace('/*DATA*/', JSON.stringify(data).replace(/</g, '\\u003c'))
     .replaceAll('{{OG_IMAGE}}', share?.poster ? `${SITE}/${share.poster}` : '');
   await writeFile(join(DIST, 'index.html'), html);
