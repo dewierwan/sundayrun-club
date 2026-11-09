@@ -86,7 +86,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 .empty { padding: 28px; border: 2px dashed var(--line); border-radius: 6px; color: var(--muted); }
 
 /* photo strip */
-.strip { overflow: hidden; padding-block: 0 48px; }
+.strip { overflow: hidden; padding-block: 0 36px; }
 .track { display: flex; gap: 10px; width: max-content; animation: drift var(--drift, 900s) linear infinite; }
 .track img { height: 240px; width: auto; border-radius: 4px; display: block; max-width: none; }
 @keyframes drift { to { transform: translateX(-50%); } }
@@ -106,9 +106,9 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 .wall a:nth-child(3n+2):hover img { transform: rotate(2deg) scale(1.04); }
 .wall a:nth-child(3n):hover img { transform: rotate(-1.2deg) scale(1.04); }
 
-/* footer */
-footer .wrap { padding-block: 32px 48px; }
-.links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 10px 0 0; padding: 0; list-style: none; }
+/* short links */
+.shortlinks { padding-block: 0 40px; }
+.links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0; padding: 0; list-style: none; }
 .links a { font-family: var(--mono); font-size: 13px; text-decoration: none; }
 .links a:hover { text-decoration: underline; }
 .links span { color: var(--muted); font-size: 14px; display: block; }
@@ -130,7 +130,7 @@ footer .wrap { padding-block: 32px 48px; }
     <div class="facts">
       <div>
         <div class="label">Meet</div>
-        <h3>Mission Dolores Park</h3>
+        <h3>Mission Dolores Park, SF</h3>
         <p>The Golden Fire Hydrant at 20th and Church, on the southwest side of the park.</p>
       </div>
       <div>
@@ -150,18 +150,17 @@ footer .wrap { padding-block: 32px 48px; }
 
   <section class="strip" aria-label="Photos"><div class="track" id="track"></div></section>
 
-  <section class="wall" id="wall" aria-label="Past runs"></section>
-</main>
-
-<footer>
-  <div class="wrap">
+  <nav class="wrap shortlinks" aria-label="Short links">
     <ul class="links">
       <li><a id="link-next" href="#next">sundayrun.club/next</a><span>The coming Sunday's Partiful</span></li>
       <li><a href="https://photos.app.goo.gl/6V19nvmFXAsfoa4H8">sundayrun.club/photos</a><span>The shared album</span></li>
       <li><a href="https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT">sundayrun.club/chat</a><span>The WhatsApp group</span></li>
     </ul>
-  </div>
-</footer>
+  </nav>
+
+  <section class="wall" id="wall" aria-label="Past runs"></section>
+</main>
+
 
 <script id="data" type="application/json">/*DATA*/</script>
 <script>
