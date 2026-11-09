@@ -90,6 +90,7 @@ h1 em { font-style: normal; white-space: nowrap; background: linear-gradient(tra
 /* past runs: full-bleed wall */
 .wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 .wall a { display: block; position: relative; }
+.wall .filler { aspect-ratio: 1; background: var(--line); }
 .wall img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; transition: transform .2s ease, box-shadow .2s ease; }
 .wall a:hover, .wall a:focus-visible { z-index: 1; }
 .wall a:hover img { box-shadow: 0 14px 30px -12px rgba(0,0,0,.45); }
@@ -223,18 +224,30 @@ footer .wrap { padding-block: 32px 48px; }
 
   var wall = document.getElementById('wall');
   var shown = past.filter(function (e) { return e.poster; });
-  function tile(e, filler) {
-    return '<a href="' + url(e) + '"' + (filler ? ' class="filler" aria-hidden="true" tabindex="-1"' : '') + '>' +
-      '<img src="' + e.poster + '" alt="' + (filler ? '' : 'Sunday Run Club #' + e.n + ', ' + dayMonth(e.s)) + '" loading="lazy"></a>';
-  }
-  wall.innerHTML = shown.map(function (e) { return tile(e, false); }).join('');
+  // Newest first: past is already sorted latest to earliest.
+  wall.innerHTML = shown.map(function (e) {
+    return '<a href="' + url(e) + '"><img src="' + e.poster + '" alt="Sunday Run Club #' + e.n + ', ' + dayMonth(e.s) + '" loading="lazy"></a>';
+  }).join('');
 
-  // Keep the wall a full rectangle: repeat the newest posters to complete the last row.
+  // Keep the wall a full rectangle: pad the last row with blank squares.
   function fillLastRow() {
     wall.querySelectorAll('.filler').forEach(function (el) { el.remove(); });
+    var w = wall.clientWidth;
+    var n = shown.length;
+    if (w > 760) {
+      // Pick the column count (tiles 170-260px wide) that leaves the fewest blanks.
+      var best = Math.round(w / 210);
+      for (var c = Math.ceil(w / 260); c <= Math.floor(w / 170); c++) {
+        var blanks = (c - n % c) % c, bestBlanks = (best - n % best) % best;
+        if (blanks < bestBlanks || (blanks === bestBlanks && Math.abs(c - w / 210) < Math.abs(best - w / 210))) best = c;
+      }
+      wall.style.gridTemplateColumns = 'repeat(' + best + ', minmax(0, 1fr))';
+    } else {
+      wall.style.gridTemplateColumns = '';
+    }
     var cols = getComputedStyle(wall).gridTemplateColumns.split(' ').length;
     var gap = (cols - shown.length % cols) % cols;
-    wall.insertAdjacentHTML('beforeend', shown.slice(0, gap).map(function (e) { return tile(e, true); }).join(''));
+    wall.insertAdjacentHTML('beforeend', new Array(gap + 1).join('<div class="filler" aria-hidden="true"></div>'));
   }
   fillLastRow();
   var resizeTimer;
