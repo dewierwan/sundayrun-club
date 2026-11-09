@@ -1,17 +1,18 @@
 # Rebuilds the site from Partiful and the shared album, then deploys it.
-# Runs on every push, every 3 hours (to pick up new photos and poster edits),
-# and on demand. A failed build leaves the last good site live.
+# Runs on every push, once a day (to pick up new album photos and newly
+# finished runs), and on demand. A failed build leaves the last good site live.
 name: Build and deploy
 
 on:
   push:
     branches: [main]
   schedule:
-    - cron: '17 */3 * * *'
+    # 04:17 UTC is about 8pm in San Francisco, after Sunday's photos are in.
+    - cron: '17 4 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -31,6 +32,16 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/build.mjs
+      # Save runs that have just finished, so later builds never refetch them.
+      - name: Commit newly finished runs
+        run: |
+          git add past
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Save finished runs"
+            git pull --rebase -q && git push
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -8,9 +8,10 @@ Nothing on the site is edited by hand except the list of events.
 
 - `events.json` lists the Partiful event IDs, in any order.
 - `scripts/build.mjs` reads each event's public Partiful page (title, date, poster), reads the shared Google Photos album, downloads the images and writes the site to `dist/`.
+- Finished runs never change, so the first build after a run ends saves its details and poster in `past/` and commits them. Later builds read them from there instead of Partiful. To refresh a past run (for example after renaming it), delete its two files in `past/`.
 - The page decides which runs are upcoming and which are past when someone opens it, so a run moves into the poster wall once it ends, with no rebuild needed.
 - `sundayrun.club/next` sends people to the first run that hasn't ended yet. `/photos` and `/chat` go to the album and the WhatsApp group.
-- GitHub Actions rebuilds and deploys on every push and every 3 hours. If Partiful or Google Photos fails, the build fails and the last good site stays live.
+- GitHub Actions rebuilds and deploys on every push and once a day (about 8pm San Francisco time). If Partiful or Google Photos fails, the build fails and the last good site stays live.
 
 ## Adding events
 
@@ -36,4 +37,4 @@ Needs Node 22 or newer. No dependencies.
 
 - Partiful has no public API. The build reads the data embedded in public event pages, so a Partiful redesign could break it.
 - Google removed API access to shared albums in March 2025. The build reads the public album page instead, which Google could also change.
-- GitHub pauses scheduled workflows in a repo with no commits for 60 days. Adding events keeps it active.
+- GitHub pauses scheduled workflows in a repo with no commits for 60 days. Adding events, and the weekly "Save finished runs" commit, keep it active.

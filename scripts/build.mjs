@@ -7,11 +7,13 @@
 // Any failure exits non-zero, so a broken build never replaces the live site.
 // Usage: node scripts/build.mjs
 
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const DIST = join(ROOT, 'dist');
+const PAST = join(ROOT, 'past');
 const SITE = 'https://sundayrun.club';
 const ALBUM_URL = 'https://photos.app.goo.gl/6V19nvmFXAsfoa4H8';
 const CHAT_URL = 'https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT';
@@ -46,7 +48,25 @@ async function pool(items, size, fn) {
   return out;
 }
 
+const ended = (e) => (e.end ? Date.parse(e.end) : Date.parse(e.start) + 90 * 60000) <= Date.now();
+
+// Finished runs never change, so their details and poster are saved in past/
+// the first time a build sees them ended, and read from there afterwards.
 async function readEvent(id) {
+  const saved = join(PAST, `${id}.json`);
+  if (existsSync(saved)) return { ...JSON.parse(await readFile(saved, 'utf8')), savedPoster: existsSync(join(PAST, `${id}.jpg`)) };
+  const e = await fetchEvent(id);
+  if (e && ended(e)) {
+    if (e.posterSrc) await writeFile(join(PAST, `${id}.jpg`), await get(e.posterSrc, { binary: true }));
+    const { posterSrc, ...meta } = e;
+    await writeFile(saved, JSON.stringify(meta, null, 2) + '\n');
+    console.log(`Saved finished run ${e.title} to past/`);
+    return { ...meta, savedPoster: !!posterSrc };
+  }
+  return e;
+}
+
+async function fetchEvent(id) {
   const html = await get(`https://partiful.com/e/${id}`);
   if (html === null) {
     console.warn(`! Partiful event ${id} not found, skipping`);
@@ -148,6 +168,7 @@ async function main() {
   const ids = JSON.parse(await readFile(join(ROOT, 'events.json'), 'utf8'));
   const template = await readFile(join(ROOT, 'src/index.html'), 'utf8');
 
+  await mkdir(PAST, { recursive: true });
   const [events, albumPhotos] = await Promise.all([
     pool([...new Set(ids)], 6, readEvent).then((list) =>
       list.filter(Boolean).sort((a, b) => a.start.localeCompare(b.start)),
@@ -160,10 +181,11 @@ async function main() {
   await mkdir(join(DIST, 'img/posters'), { recursive: true });
   await mkdir(join(DIST, 'img/photos'), { recursive: true });
 
-  const withPosters = await pool(events, 6, async (e) => {
-    if (!e.posterSrc) return { ...e, poster: null };
+  const withPosters = await pool(events, 6, async ({ savedPoster, ...e }) => {
     const file = `img/posters/${e.id}.jpg`;
-    await writeFile(join(DIST, file), await get(e.posterSrc, { binary: true }));
+    if (savedPoster) await copyFile(join(PAST, `${e.id}.jpg`), join(DIST, file));
+    else if (e.posterSrc) await writeFile(join(DIST, file), await get(e.posterSrc, { binary: true }));
+    else return { ...e, poster: null };
     return { ...e, poster: file };
   });
 
