@@ -59,34 +59,37 @@ h1 .nowrap { white-space: nowrap; }
 .facts p { margin: 0; color: var(--muted); font-size: 15px; max-width: 32ch; }
 
 /* next run */
-.next { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 300px); justify-content: start; gap: 32px 56px; align-items: center; padding-block: 36px 48px; border-top: 1px solid var(--line); }
+.next { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "nl nl sl" "bib post soon"; gap: 14px 28px; align-items: start; padding-block: 36px 48px; border-top: 1px solid var(--line); }
+.next-label { grid-area: nl; }
+.soon-label { grid-area: sl; }
+.next-bib { grid-area: bib; padding-top: 6px; }
+.next-poster { grid-area: post; display: block; }
 .bib { background: var(--bib); color: var(--bib-ink); border-radius: 6px; position: relative; padding: 18px 34px 30px; box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 10px 30px -18px rgba(0,0,0,.35); transform: rotate(-1.2deg); transition: transform .2s ease; }
 a.bib { display: block; text-decoration: none; }
 a.bib:hover { transform: rotate(1deg) scale(1.02); }
 .bib::before, .bib::after, .bib .pins::before, .bib .pins::after { content: ""; position: absolute; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 1px 2px rgba(0,0,0,.25); }
 .bib::before { top: 12px; left: 12px; } .bib::after { top: 12px; right: 12px; }
 .bib .pins::before { bottom: 12px; left: 12px; } .bib .pins::after { bottom: 12px; right: 12px; }
+.bib-top span { white-space: nowrap; }
 .bib-top { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; border-bottom: 2px solid var(--bib-ink); padding-bottom: 10px; }
 .bib-num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: clamp(80px, 11vw, 120px); line-height: .9; letter-spacing: -.03em; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
 .bib-num small { font-size: .32em; vertical-align: top; margin-right: 4px; font-stretch: 80%; }
-.bib-when { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 24px; line-height: 1.2; }
+.bib-when { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 21px; line-height: 1.2; }
 .btn { display: inline-block; margin-top: 28px; background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 700; padding: 13px 22px; border-radius: 999px; }
 .btn:hover { background: var(--gold); color: var(--gold-ink); }
-.soon { grid-column: 1 / -1; margin-top: 12px; }
-.soon ul { list-style: none; margin: 10px 0 0; padding: 0; }
-.soon a { display: grid; grid-template-columns: 44px auto 1fr auto; gap: 16px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); text-decoration: none; }
-.soon li:last-child a { border-bottom: 1px solid var(--line); }
-.soon img { width: 44px; height: 44px; border-radius: 4px; object-fit: cover; display: block; transition: transform .2s ease; }
-.soon b { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
-.soon .d { color: var(--muted); }
-.soon .go { font-size: 14px; color: var(--muted); }
-.soon a:hover .go { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+.soon { grid-area: soon; list-style: none; margin: 0; padding: 0; }
+.soon a { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.soon li:first-child a { border-top: 1px solid var(--line); }
+.soon img { width: 52px; height: 52px; border-radius: 4px; object-fit: cover; display: block; transition: transform .2s ease; }
+.soon b { display: block; font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 20px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.soon .d { display: block; color: var(--muted); font-size: 15px; }
+.soon a:hover .d { color: var(--ink); }
 .soon a:hover img { transform: rotate(-3deg) scale(1.06); }
 .poster { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block; max-width: 100%; }
 .empty { padding: 28px; border: 2px dashed var(--line); border-radius: 6px; color: var(--muted); }
 
 /* photo strip */
-.strip { overflow: hidden; padding-block: 0 36px; }
+.strip { overflow: hidden; padding-block: 0 10px; }
 .track { display: flex; gap: 10px; width: max-content; animation: drift var(--drift, 900s) linear infinite; }
 .track img { height: 240px; width: auto; border-radius: 4px; display: block; max-width: none; }
 @keyframes drift { to { transform: translateX(-50%); } }
@@ -108,13 +111,20 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 
 /* short links */
 .shortlinks { padding-block: 0 40px; }
-.links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0; padding: 0; list-style: none; }
+.links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 28px; margin: 0; padding: 0; list-style: none; }
 .links a { font-family: var(--mono); font-size: 13px; text-decoration: none; }
 .links a:hover { text-decoration: underline; }
 .links span { color: var(--muted); font-size: 14px; display: block; }
 
+@media (max-width: 1000px) and (min-width: 761px) {
+  .bib { padding: 16px 18px 24px; }
+  .bib-top { font-size: 10px; letter-spacing: .02em; gap: 8px; }
+}
 @media (max-width: 760px) {
-  .next { grid-template-columns: minmax(0, 1fr); }
+  .next { grid-template-columns: minmax(0, 1fr); grid-template-areas: "nl" "bib" "post" "sl" "soon"; }
+  .next-poster { max-width: 340px; margin-top: 18px; }
+  .soon-label { margin-top: 18px; }
+  .links { grid-template-columns: minmax(0, 1fr); }
   .facts { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .track img { height: 180px; }
   .bib { padding: 16px 26px 26px; }
@@ -148,8 +158,6 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 
   <section class="wrap next" id="next" aria-label="Next run"></section>
 
-  <section class="strip" aria-label="Photos"><div class="track" id="track"></div></section>
-
   <nav class="wrap shortlinks" aria-label="Short links">
     <ul class="links">
       <li><a id="link-next" href="#next">sundayrun.club/next</a><span>The coming Sunday's Partiful</span></li>
@@ -157,6 +165,8 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
       <li><a href="https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT">sundayrun.club/chat</a><span>The WhatsApp group</span></li>
     </ul>
   </nav>
+
+  <section class="strip" aria-label="Photos"><div class="track" id="track"></div></section>
 
   <section class="wall" id="wall" aria-label="Past runs"></section>
 </main>
@@ -196,9 +206,11 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   var next = document.getElementById('next');
   if (upcoming.length) {
     var n0 = upcoming[0];
+    var later = upcoming.slice(1);
     next.innerHTML =
-      '<div>' +
-        '<div class="label" style="margin-bottom:14px">Next run</div>' +
+      '<div class="label next-label">Next run</div>' +
+      (later.length ? '<div class="label soon-label">Coming up</div>' : '') +
+      '<div class="next-bib">' +
         '<a class="bib" href="' + url(n0) + '" aria-label="RSVP to Sunday Run Club #' + n0.n + ' on Partiful"><span class="pins"></span>' +
           '<div class="bib-top"><span>Sunday Run Club</span><span>' + when(n0.s) + '</span></div>' +
           '<div class="bib-num"><small>#</small>' + n0.n + '</div>' +
@@ -206,15 +218,14 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
         '</a>' +
         '<a class="btn" href="' + url(n0) + '">RSVP on Partiful</a>' +
       '</div>' +
-      '<a href="' + url(n0) + '"><img class="poster" src="' + n0.poster + '" alt="Poster for Sunday Run Club #' + n0.n + '"></a>' +
-      (upcoming.length > 1 ? '<div class="soon"><div class="label">Coming up</div><ul>' +
-        upcoming.slice(1).map(function (e) {
-          return '<li><a href="' + url(e) + '">' +
-            (e.poster ? '<img src="' + e.poster + '" alt="" loading="lazy">' : '<span></span>') +
-            '<b>#' + e.n + '</b>' +
-            '<span class="d">' + weekday(e.s) + ' ' + dayMonth(e.s) + ', ' + time(e.s) + '</span>' +
-            '<span class="go">RSVP</span></a></li>';
-        }).join('') + '</ul></div>' : '');
+      '<a class="next-poster" href="' + url(n0) + '"><img class="poster" src="' + n0.poster + '" alt="Poster for Sunday Run Club #' + n0.n + '"></a>' +
+      (later.length ? '<ul class="soon">' + later.map(function (e) {
+        // Runs are at 9am; only mention the time when it differs.
+        var t = time(e.s) === '9:00am' ? '' : ', ' + time(e.s);
+        return '<li><a href="' + url(e) + '" aria-label="RSVP to Sunday Run Club #' + e.n + ' on Partiful">' +
+          (e.poster ? '<img src="' + e.poster + '" alt="" loading="lazy">' : '<span></span>') +
+          '<span><b>#' + e.n + '</b><span class="d">' + weekday(e.s) + ' ' + dayMonth(e.s) + t + '</span></span></a></li>';
+      }).join('') + '</ul>' : '');
     document.getElementById('link-next').href = url(n0);
   } else {
     next.innerHTML = '<div class="empty">The next run is being planned. Check the WhatsApp group for updates.</div>';
