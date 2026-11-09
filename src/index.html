@@ -80,7 +80,6 @@ h1 em { font-style: normal; white-space: nowrap; background: linear-gradient(tra
 /* photo strip */
 .strip { overflow: hidden; padding-block: 0 48px; }
 .track { display: flex; gap: 10px; width: max-content; animation: drift var(--drift, 900s) linear infinite; }
-.strip:hover .track { animation-play-state: paused; }
 .track img { height: 240px; width: auto; border-radius: 4px; display: block; max-width: none; }
 @keyframes drift { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
@@ -219,7 +218,8 @@ footer .wrap { padding-block: 32px 48px; }
     return '<img src="' + p.src + '" width="' + w + '" height="240" alt="Run club photo from ' + p.date + '" loading="lazy">';
   }).join('');
   track.innerHTML = imgs + imgs.replace(/alt="[^"]*"/g, 'alt="" aria-hidden="true"');
-  track.style.setProperty('--drift', Math.round(total / 22) + 's');
+  // 50 px per second, the react-fast-marquee default.
+  track.style.setProperty('--drift', Math.round(total / 50) + 's');
 
   var wall = document.getElementById('wall');
   var shown = past.filter(function (e) { return e.poster; });
