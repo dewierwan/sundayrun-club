@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: one statement, the next run as a race bib beside its poster, a slow photo strip, then a full-bleed wall of past posters. */
+/* Layout: one statement, the next run as a race bib beside its poster, a slow photo strip, then a full-bleed wall of every poster, newest first. */
 :root {
   --paper: #f6f5f1;
   --ink: #1d1c19;
@@ -98,7 +98,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   .track { animation: none; }
 }
 
-/* past runs: full-bleed wall */
+/* all runs: full-bleed wall */
 .wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 .wall a { display: block; position: relative; }
 .wall .filler { aspect-ratio: 1; background: var(--line); }
@@ -168,7 +168,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 
   <!--PHOTO_STRIP--><section class="strip" aria-label="Photos"><div class="track" id="track"></div></section><!--/PHOTO_STRIP-->
 
-  <section class="wall" id="wall" aria-label="Past runs"></section>
+  <section class="wall" id="wall" aria-label="All runs"></section>
 </main>
 
 
@@ -201,7 +201,6 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
     return e;
   });
   var upcoming = events.filter(function (e) { return e.e > now; });
-  var past = events.filter(function (e) { return e.e <= now; }).reverse();
 
   var next = document.getElementById('next');
   if (upcoming.length) {
@@ -244,8 +243,8 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   }
 
   var wall = document.getElementById('wall');
-  var shown = past.filter(function (e) { return e.poster; });
-  // Newest first: past is already sorted latest to earliest.
+  // Every run with a poster, including upcoming ones: furthest in the future first, #1 last.
+  var shown = events.filter(function (e) { return e.poster; }).slice().sort(function (a, b) { return b.s - a.s; });
   wall.innerHTML = shown.map(function (e) {
     return '<a href="' + url(e) + '"><img src="' + e.poster + '" alt="Sunday Run Club #' + e.n + ', ' + dayMonth(e.s) + '" loading="lazy"></a>';
   }).join('');
@@ -268,7 +267,10 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
     }
     var cols = getComputedStyle(wall).gridTemplateColumns.split(' ').length;
     var gap = (cols - shown.length % cols) % cols;
-    wall.insertAdjacentHTML('beforeend', new Array(gap + 1).join('<div class="filler" aria-hidden="true"></div>'));
+    // Blanks open the last row, so #1 always sits bottom right.
+    var tiles = wall.querySelectorAll('a');
+    var fillers = new Array(gap + 1).join('<div class="filler" aria-hidden="true"></div>');
+    if (gap) tiles[shown.length - shown.length % cols].insertAdjacentHTML('beforebegin', fillers);
   }
   fillLastRow();
   var resizeTimer;
