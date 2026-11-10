@@ -160,9 +160,9 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 
   <nav class="wrap shortlinks" aria-label="Short links">
     <ul class="links">
-      <li><a id="link-next" href="#next">sundayrun.club/next</a><span>The coming Sunday's Partiful</span></li>
-      <li><a href="https://chat.whatsapp.com/GkPHJlDMQ7TGcaS0tklQyT">sundayrun.club/chat</a><span>The WhatsApp group</span></li>
-      <li><a href="https://photos.app.goo.gl/6V19nvmFXAsfoa4H8">sundayrun.club/photos</a><span>The shared album</span></li>
+      <li><a href="/next">sundayrun.club/next</a><span>The coming Sunday's Partiful</span></li>
+      <li><a href="/chat">sundayrun.club/chat</a><span>The WhatsApp group</span></li>
+      <li><a href="/photos">sundayrun.club/photos</a><span>The shared album</span></li>
     </ul>
   </nav>
 
@@ -226,7 +226,6 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
           (e.poster ? '<img src="' + e.poster + '" alt="" loading="lazy">' : '<span></span>') +
           '<span><b>#' + e.n + '</b><span class="d">' + weekday(e.s) + ' ' + dayMonth(e.s) + t + '</span></span></a></li>';
       }).join('') + '</ul>' : '');
-    document.getElementById('link-next').href = url(n0);
   } else {
     next.innerHTML = '<div class="empty">The next run is being planned. Check the WhatsApp group for updates.</div>';
   }
