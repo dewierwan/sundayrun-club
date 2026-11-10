@@ -267,10 +267,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
     }
     var cols = getComputedStyle(wall).gridTemplateColumns.split(' ').length;
     var gap = (cols - shown.length % cols) % cols;
-    // Blanks open the last row, so #1 always sits bottom right.
-    var tiles = wall.querySelectorAll('a');
-    var fillers = new Array(gap + 1).join('<div class="filler" aria-hidden="true"></div>');
-    if (gap) tiles[shown.length - shown.length % cols].insertAdjacentHTML('beforebegin', fillers);
+    wall.insertAdjacentHTML('beforeend', new Array(gap + 1).join('<div class="filler" aria-hidden="true"></div>'));
   }
   fillLastRow();
   var resizeTimer;
