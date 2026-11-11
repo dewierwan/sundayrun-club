@@ -49,6 +49,8 @@ img { max-width: 100%; }
 .wrap { max-width: 1040px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
 .label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
+/* Everything above the poster wall fills at least one screen, so the wall always starts below the fold. On tall screens the content sits in the middle. */
+.top { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
 
 /* intro */
 .intro { padding-block: 64px 36px; }
@@ -135,6 +137,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
 <body>
 
 <main>
+  <div class="top"><div>
   <section class="wrap intro">
     <h1>9am, <span class="nowrap">Golden Fire Hydrant</span>, every Sunday.</h1>
     <div class="facts">
@@ -167,6 +170,7 @@ a.bib:hover { transform: rotate(1deg) scale(1.02); }
   </nav>
 
   <!--PHOTO_STRIP--><section class="strip" aria-label="Photos"><div class="track" id="track"></div></section><!--/PHOTO_STRIP-->
+  </div></div>
 
   <section class="wall" id="wall" aria-label="All runs"></section>
 </main>
